@@ -2,13 +2,15 @@
   (:require [quil.core :as q :include-macros true]
             [quil.middleware :as m]))
 
+(def frame-rate 30)
+
 (defn setup []
-  (q/frame-rate 30)
-  (q/color-mode :hsb)
+  (q/frame-rate frame-rate)
+  (q/color-mode :rgb)
   {:nbp 50})
 
 (defn update-state [state]
-  {:nbp 80
+  {:nbg 30
    :phase 2})
 
 ; (def t q/with-translation)
@@ -41,22 +43,64 @@
   [frame period]
   (let [t (* frame (/ (* 2 q/PI) period))]
     (/ (+ 1 (q/sin t)) 2)))
-  
 
-(defn draw-state [{:keys [nbp]}]
-  (let [f (q/frame-count)
-        bgcolor (lin-scale 0 (msin f 200) 360)]
-  (q/background bgcolor)
+(def lerp lin-scale)
+
+(defn spike
+  "f(0) = 0, f(0.5) = 1, f(1) = 0, lerp elsewhere."
+  [t]
+  (if (< t 0.5)
+    (* 2 t)
+    (- 1 (* 2 (- t 0.5)))
+    ))
+
+(defn mcycle
+  [period frame]
+  (/ (mod frame period) period))
+
+(defn bpm-period-in-frames
+  [bpm]
+  (let [fps frame-rate
+        seconds-in-a-beat (/ bpm 60)]
+    (* seconds-in-a-beat fps)))
+
+(def point-radius 3)
+(defn dot [x y]
+  (q/ellipse x y point-radius point-radius))
+
+(defn norm [x y] (sqrt (+ (square x) (square y))))
+
+(defn rect2 [x y w h] (q/rect (- x (/ w 2)) (- y (/ h 2)) w h))
+
+(defn slide
+  [offset t]
+  (if (< t offset)
+    (+ t offset)
+    (- t offset)))
+
+(defn draw-state [{:keys [nbg]}]
+  (let [f (q/frame-count)]
+  (q/background 255 120 0)
   (q/no-stroke)
-  (doseq [p (range 0 1 (/ 1 nbp))]
-    (let [dc (/ w nbp)
-          dc_2 (/ dc 2)
-          x (lin-scale dc_2 p (- w dc_2))
-          y (lin-scale dc_2 p (- h dc_2))
-          ]
-      (q/fill 255 255 255)
-      (square-centered-at x y dc))))
+  (q/fill 0)
+  (doseq [i (range 0 (inc nbg))]
+    (let [it (/ i nbg)
+          color (lerp 90 it 180)
+          thickness (/ w nbg)
+          cx (lerp 0 it w)
+          cy (lerp 0 it h)
+          angle (/ q/PI 4)]
+      (q/fill color)
+      (q/with-translation
+        [cx cy]
+        (q/with-rotation
+          [angle]
+          (rect2 0 0 thickness (* 1.5 h))))
+      )
     )
+  
+  
+  ))
 
 (q/defsketch sketches
   :host "canvas"
