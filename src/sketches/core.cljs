@@ -78,24 +78,40 @@
     (+ t offset)
     (- t offset)))
 
+(defn hypotenuse
+  [x y] (sqrt (+ (square x) (square y))))
+
+(defn rlerp
+  "ça va de a à b et je veux que ça aille de x à y"
+  [a b x y v]
+  (let [t (/ (- v a) (- b a))]
+    (+ x (* t (- y x)))))
+
+(defn stripe
+  [direction thickness d]
+  (let [dc (rlerp -1 1 0 1 d)
+        cx (* dc w)
+        cy (* dc h)]
+  (q/with-translation
+    [cx cy]
+    (q/with-rotation
+      [(* direction (/ q/PI -4))]
+      (rect2 0 0 (* 1.5 w) thickness)))))
+
 (defn draw-state [{:keys [nbg]}]
   (let [f (q/frame-count)]
-  (q/background 255 120 0)
+  (q/background 255)
   (q/no-stroke)
   (q/fill 0)
   (doseq [i (range 0 (inc nbg))]
     (let [it (/ i nbg)
-          color (lerp 90 it 180)
-          thickness (/ w nbg)
+          color 127
+          thickness 10
           cx (lerp 0 it w)
           cy (lerp 0 it h)
           angle (/ q/PI 4)]
       (q/fill color)
-      (q/with-translation
-        [cx cy]
-        (q/with-rotation
-          [angle]
-          (rect2 0 0 thickness (* 1.5 h))))
+      (stripe 90 10 0.5)
       )
     )
   
