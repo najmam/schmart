@@ -4,7 +4,7 @@
 
 (defn setup []
   (q/frame-rate 30)
-  (q/color-mode :hsv)
+  (q/color-mode :hsb)
   {:nbp 50})
 
 (defn update-state [state]
@@ -31,32 +31,32 @@
 (def w canvas-width)
 (def h canvas-height)
 
-(defn draw-state [{:keys [nbp]}]
-  (q/background 0)
-  (doseq [point (range 0 (inc nbp))]
-      (let [p (/ point nbp)
-            f (q/frame-count)
-            pos1 (fn [p min max] (lin-scale min p max))
-            x (pos1 p (* 0.40 w) (* 0.85 w))
-            y (pos1 p (* 0.25 h) (* 0.75 h))
-            phase (/ f 25)
-            hue (lin-scale 0 p 360)
-            saturation (lin-scale 250 p 0)
-            value (lin-scale 0 p 360)
-            size 60]
-        (q/fill hue saturation value)
-        (q/rect (- x (/ size 2)) (- y (/ size 2)) size size))))
+(defn square-centered-at
+  [x y size]
+  (q/rect (- x (/ size 2))
+          (- y (/ size 2))
+          size size))
+
+(defn msin
+  [frame period]
+  (let [t (* frame (/ (* 2 q/PI) period))]
+    (/ (+ 1 (q/sin t)) 2)))
   
-;  (q/fill (:color state) 255 255)
-;  ; Calculate x and y coordinates of the circle.
-;  (let [angle (:angle state)
-;        x (* 150 (q/cos angle))
-;        y (* 150 (q/sin angle))]
-;    ; Move origin point to the center of the sketch.
-;    (q/with-translation [(/ (q/width) 2)
-;                         (/ (q/height) 2)]
-;      ; Draw the circle.
-;      (q/ellipse x y 100 100))))
+
+(defn draw-state [{:keys [nbp]}]
+  (let [f (q/frame-count)
+        bgcolor (lin-scale 0 (msin f 200) 360)]
+  (q/background bgcolor)
+  (q/no-stroke)
+  (doseq [p (range 0 1 (/ 1 nbp))]
+    (let [dc (/ w nbp)
+          dc_2 (/ dc 2)
+          x (lin-scale dc_2 p (- w dc_2))
+          y (lin-scale dc_2 p (- h dc_2))
+          ]
+      (q/fill 255 255 255)
+      (square-centered-at x y dc))))
+    )
 
 (q/defsketch sketches
   :host "canvas"
