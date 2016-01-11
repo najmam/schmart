@@ -18,7 +18,7 @@
   :source-paths ["src/"]
   
   :figwheel {
-    :css-dirs ["css"]
+    :css-dirs ["www/css"]
     :open-file-command ["figwheel-open-subl"]
   }
   
@@ -28,10 +28,10 @@
              :figwheel { :devcards false }
              :compiler
              {
-              :output-to "js/main.js"
-              :output-dir "out"
-              :asset-path "out"
-              :main "sketches.core"
+              :output-to "www/js/dev.js"
+              :output-dir "www/js/dev"
+              :asset-path "js/dev"
+              :main "sketches.playground"
               :optimizations :none
               :pretty-print true
               }
@@ -41,14 +41,25 @@
              :figwheel { :devcards true }
              :compiler
              {
-              :main "sketches.core"
-              :output-to "js/devcards.js"
-              :output-dir "js/devcards_out"
-              :asset-path "js/devcards_out"
+              :main "sketches.playground"
+              :output-to "www/js/devcards.js"
+              :output-dir "www/js/devcards"
+              :asset-path "js/devcards"
               :optimizations :none
               :cache-analysis true
               :source-map-timestamp true
               :source-map true
+             }
+             }
+            {:id "standalone"
+             :source-paths ["src/"]
+             :compiler
+             {
+              :main "sketches.playground"
+              :output-to "www/js/sketch.js"
+              :output-dir "www/js/standalone"
+              :asset-path "js/standalone"
+              :optimizations :advanced
              }
              }
             ]})

@@ -11,3 +11,4 @@ figwheel_server.log
 *.sublime-workspace
 js/
 out/
+www/js/

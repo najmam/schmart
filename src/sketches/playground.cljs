@@ -1,4 +1,4 @@
-(ns sketches.core
+(ns sketches.playground
   (:require [quil.core :as q :include-macros true]
             [quil.middleware :as m]
             [sketches.delaunay :refer [triangulate]]))
@@ -190,19 +190,40 @@
 
 
 
+(defn add-corners
+  [pts]
+  (conj pts [0 0] [0 h] [w h] [w 0]))
+
 (defn setup []
   (q/frame-rate frame-rate)
   (q/color-mode :rgb)
-  (let [pts (random-points)
-        with-corners (conj pts [0 0] [0 h] [w h] [w 0])]
+  (let [pts (random-points)]
     {:points pts
-     :triangulation (triangulate with-corners)}))
+     :triangulation (triangulate (add-corners pts))}))
+
+(defn randomly-displace-points
+  [points]
+  (let [probability-of-displacing 0.5 ; in [0,1[
+        random-displacement (fn [] [(random-in -10 10) (random-in -10 10)])
+        displace (fn [pt]
+                   (if (> (random) probability-of-displacing)
+                     pt
+                     (add-vec pt (random-displacement))
+                     ))]
+    (map displace points)))
 
 (defn update-state [state]
-  state)
+  (let [{:keys [points]} state
+        newpts (randomly-displace-points points)
+        newtrig (triangulate (add-corners newpts))]
+    (if (not= 45 (mod (q/frame-count) 30))
+      state
+      (-> state
+          (assoc :points newpts)
+          (assoc :triangulation newtrig)))))
 
 (q/defsketch sketches
-  :host "canvas"
+  :host "sketch"
   :size [500 500]
   :setup setup
   :update update-state
