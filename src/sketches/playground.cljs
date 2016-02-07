@@ -1,7 +1,6 @@
 (ns sketches.playground
   (:require [quil.core :as q :include-macros true]
-            [quil.middleware :as m]
-            [sketches.delaunay :refer [triangulate]]))
+            [quil.middleware :as m]))
 (enable-console-print!)
 
 (def frame-rate 30)
@@ -29,7 +28,6 @@
       (map (fn [[x y]] [(* w x) (* h y)]))
       ))
 
-; (def t q/with-translation)
 (def e q/ellipse)
 
 (defn lin-scale
@@ -41,7 +39,6 @@
 
 (defn *sqrt2 [x] (* (.sqrt js/Math 2) x))
 (defn sqrt [x] (.sqrt js/Math x))
-
 
 (defn square-centered-at
   [x y size]
@@ -74,10 +71,6 @@
         seconds-in-a-beat (/ bpm 60)]
     (* seconds-in-a-beat fps)))
 
-(def point-radius 3)
-(defn dot [x y]
-  (q/ellipse x y point-radius point-radius))
-
 (defn norm [x y] (sqrt (+ (square x) (square y))))
 
 (defn rect2 [x y w h] (q/rect (- x (/ w 2)) (- y (/ h 2)) w h))
@@ -97,21 +90,6 @@
   (let [t (/ (- v a) (- b a))]
     (+ x (* t (- y x)))))
 
-(defn stripe
-  "Direction is the angle formed by the stripe irt the X-axis pointing right.
-  d is the distance from the stripe to a parallel stripe passing through (0,0)."
-  [direction thickness d]
-  (let [dc (rlerp -1 1 0 1 d)
-        cx (* dc w)
-        cy (* dc h)]
-  (q/with-translation
-    [cx cy]
-    (q/with-rotation
-      [(* direction (/ q/PI -4))]
-      (rect2 0 0 (* 1.5 w) thickness)))))
-
-(def alley-width 10)
-
 (defn barycentre
   [x1 y1 x2 y2 x3 y3]
   [(/ (+ x1 x2 x3) 3)
@@ -126,101 +104,31 @@
   [(->> vecs (map first) (reduce +))
    (->> vecs (map second) (reduce +))])
 
-(defn shrink-trig
-  [bary scale x1 y1 x2 y2 x3 y3]
-  (let [[bx by] bary
-        v1 [(- x1 bx) (- y1 by)]
-        v2 [(- x2 bx) (- y2 by)]
-        v3 [(- x3 bx) (- y3 by)]
-        sv1 (scale-vec v1 scale)
-        sv2 (scale-vec v2 scale)
-        sv3 (scale-vec v3 scale)
-        newpts (map #(add-vec bary %) [sv1 sv2 sv3])]
-    (apply concat newpts)))
+; ---------------------------------------------------
 
-(defn erode-vec
-  [v px]
-  (let [;[[x1 y1] [x2 y2]] v
-        norm 20 ;(q/dist x1 y1 x2 y2)
-        newnorm (- norm px)
-        scale (/ newnorm norm)]
-    (if (< newnorm 0)
-      v
-      (scale-vec v scale))))
+(defn circle
+  ([x y] (circle x y 3))
+  ([x y radius]
+   (q/ellipse x y radius radius)))
 
-(defn erode-trig
-  [bary erosion x1 y1 x2 y2 x3 y3]
-  (let [[bx by] bary
-        v1 [(- x1 bx) (- y1 by)]
-        v2 [(- x2 bx) (- y2 by)]
-        v3 [(- x3 bx) (- y3 by)]
-        sv1 (erode-vec v1 erosion)
-        sv2 (erode-vec v2 erosion)
-        sv3 (erode-vec v3 erosion)
-        newpts (map #(add-vec bary %) [sv1 sv2 sv3])]
-    (apply concat newpts)))
-
-(defn draw-state [{:keys [points triangulation]}]
-  (let [f (q/frame-count)]
-  (q/background 0)
-  #_ (doseq [[x y] points]
-    (dot x y))
-  (q/no-stroke)
-  (let [{:keys [triangles]} triangulation]
-    (doseq [[[x1 y1] [x2 y2] [x3 y3]] triangles]
-      (let [bary (barycentre x1 y1 x2 y2 x3 y3)
-            shrunk (shrink-trig bary 0.8 x1 y1 x2 y2 x3 y3)
-            eroded (erode-trig bary 5 x1 y1 x2 y2 x3 y3)
-            [ex1 ey1 ex2 ey2 ex3 ey3] eroded
-            [sx1 sy1 sx2 sy2 sx3 sy3] shrunk]
-        (q/fill 255) (q/triangle ex1 ey1 ex2 ey2 ex3 ey3) ; eroded
-        ; (q/fill 0) (q/triangle x1 y1 x2 y2 x3 y3) ; original triangle
-        ; (q/fill 0) (q/triangle sx1 sy1 sx2 sy2 sx3 sy3) ; scaled down
-        ; (q/fill 255 0 0) (dot (first bary) (second bary)) ; barycentre
-        )))
-  (q/stroke 0 255 0)
-  (let [{:keys [edges]} triangulation]
-    (doseq [[p1 p2] edges]
-      #_ (q/line p1 p2)
-      )
-    )
-  
-  
-  ))
-
-
-
-(defn add-corners
-  [pts]
-  (conj pts [0 0] [0 h] [w h] [w 0]))
+; ---------------------------------------------------
 
 (defn setup []
   (q/frame-rate frame-rate)
   (q/color-mode :rgb)
   (let [pts (random-points)]
-    {:points pts
-     :triangulation (triangulate (add-corners pts))}))
-
-(defn randomly-displace-points
-  [points]
-  (let [probability-of-displacing 0.5 ; in [0,1[
-        random-displacement (fn [] [(random-in -10 10) (random-in -10 10)])
-        displace (fn [pt]
-                   (if (> (random) probability-of-displacing)
-                     pt
-                     (add-vec pt (random-displacement))
-                     ))]
-    (map displace points)))
+    {:points pts}))
 
 (defn update-state [state]
-  (let [{:keys [points]} state
-        newpts (randomly-displace-points points)
-        newtrig (triangulate (add-corners newpts))]
-    (if (not= 45 (mod (q/frame-count) 30))
-      state
-      (-> state
-          (assoc :points newpts)
-          (assoc :triangulation newtrig)))))
+  state)
+
+(defn draw-state [{:keys [points triangulation]}]
+  (let [f (q/frame-count)
+        w 500
+        h 500]
+  (q/background 0)
+  (circle (/ w 2) (/ h 2) 10)
+))
 
 (q/defsketch sketches
   :host "sketch"
