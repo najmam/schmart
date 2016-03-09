@@ -20,14 +20,7 @@
   (->> (repeatedly random)
       (take nb)
       (partition 2)
-      (map (fn [[x y]] [(* w x) (* h y)]))
-      ))
-
-(defn lin-scale
-  [min val max]
-  (+ min (* val (- max min))))
-
-(def lerp lin-scale)
+      (map (fn [[x y]] [(* w x) (* h y)]))))
 
 (defn square [x] (* x x))
 
@@ -35,12 +28,11 @@
 (defn sqrt [x] (.sqrt js/Math x))
 
 (defn spike
-  "f(0) = 0, f(0.5) = 1, f(1) = 0, lerp elsewhere."
+  "f(0) = 0, f(0.5) = 1, f(1) = 0, linear interpolation in between."
   [t]
   (if (< t 0.5)
     (* 2 t)
-    (- 1 (* 2 (- t 0.5)))
-    ))
+    (- 1 (* 2 (- t 0.5)))))
 
 (defn mcycle
   [period frame]
@@ -51,7 +43,9 @@
   (let [seconds-in-a-beat (/ bpm 60)]
     (* seconds-in-a-beat fps)))
 
-(defn norm [x y] (sqrt (+ (square x) (square y))))
+(defn norm
+  [x y]
+  (sqrt (+ (square x) (square y))))
 
 (defn slide
   [offset t]
@@ -60,10 +54,11 @@
     (- t offset)))
 
 (defn hypotenuse
-  [x y] (sqrt (+ (square x) (square y))))
+  [x y]
+  (sqrt (+ (square x) (square y))))
 
-(defn rlerp
-  "ça va de a à b et je veux que ça aille de x à y"
+(defn range-lerp
+  "v is in [a,b] but I want it to be in [x,y]."
   [a b x y v]
   (let [t (/ (- v a) (- b a))]
     (+ x (* t (- y x)))))
@@ -81,5 +76,3 @@
   [& vecs]
   [(->> vecs (map first) (reduce +))
    (->> vecs (map second) (reduce +))])
-
-; ---------------------------------------------------
