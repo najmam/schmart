@@ -7,6 +7,12 @@
                  [org.clojure/clojurescript "1.7.228"]
                  
                  [quil "2.3.0"]
+                 [thi.ng/geom "0.0.908"]
+                 [thi.ng/color "1.0.1"]
+                 [thi.ng/math "0.1.4"]
+                 #_ [thi.ng/morphogen "0.1.1"] ; [thi.ng/morphogen "0.1.1"]
+                 #_ [thi.ng/shadergraph "0.1.1"]
+                 #_ [thi.ng/dstruct "0.1.2"] ; heap, disjoint set, bi-directional map
                  
                  ; development tools
                  [figwheel-sidecar "0.5.0"]
@@ -31,7 +37,7 @@
               :output-to "www/js/dev.js"
               :output-dir "www/js/dev"
               :asset-path "js/dev"
-              :main "sketches.particles"
+              :main "sketches.palette"
               :optimizations :none
               :pretty-print true
               }
