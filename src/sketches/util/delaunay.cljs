@@ -1,5 +1,5 @@
 ; https://github.com/trystan/delaunay-triangulation
-(ns sketches.delaunay
+(ns sketches.util.delaunay
   (:require [clojure.set]))
 
 ;; https://gist.github.com/mutoo/5617691

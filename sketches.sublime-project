@@ -4,7 +4,7 @@
 		{
 			"path": ".",
 			"folder_exclude_patterns": ["out", "target", "devcards_out", "js"],
-			"file_exclude_patterns": ["figwheel_server.log"]
+			"file_exclude_patterns": ["figwheel_server.log", "*-init.clj"]
 		}
 	]
 }

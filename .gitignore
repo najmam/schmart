@@ -12,3 +12,5 @@ figwheel_server.log
 js/
 out/
 www/js/
+*-init.clj
+

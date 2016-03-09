@@ -3,14 +3,14 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [org.clojure/clojurescript "1.7.170"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/clojurescript "1.7.228"]
                  
                  [quil "2.3.0"]
                  
                  ; development tools
                  [figwheel-sidecar "0.5.0"]
-                 [devcards "0.2.1-2"]]
+                 #_ [devcards "0.2.1-2"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]]
   :hooks [leiningen.cljsbuild]
@@ -31,12 +31,12 @@
               :output-to "www/js/dev.js"
               :output-dir "www/js/dev"
               :asset-path "js/dev"
-              :main "sketches.playground"
+              :main "sketches.particles"
               :optimizations :none
               :pretty-print true
               }
              }
-            {:id "devcards"
+            #_ {:id "devcards"
              :source-paths ["src/"]
              :figwheel { :devcards true }
              :compiler
@@ -51,7 +51,7 @@
               :source-map true
              }
              }
-            {:id "standalone"
+            #_ {:id "standalone"
              :source-paths ["src/"]
              :compiler
              {

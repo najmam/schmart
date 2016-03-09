@@ -1,6 +1,6 @@
-all: none
+all: rlwrap-figwheel
 
-none:
+nothing:
 	@echo "Default task - nothing to do."
 
 rlwrap-figwheel:
@@ -15,3 +15,7 @@ once:
 
 css:
 	gulp less
+
+clean:
+	find . -name \*init.clj | xargs rm -f
+	rm -f figwheel_server.log
