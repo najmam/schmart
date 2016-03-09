@@ -1,11 +1,6 @@
 (ns sketches.util.math
   (:require [quil.core :as q]))
 
-(defn msin
-  [frame period]
-  (let [t (* frame (/ (* 2 q/PI) period))]
-    (/ (+ 1 (q/sin t)) 2)))
-
 (defn random
   "A random number between 0 (included) and 1 (excluded)."
   []
@@ -22,10 +17,10 @@
       (partition 2)
       (map (fn [[x y]] [(* w x) (* h y)]))))
 
-(defn square [x] (* x x))
-
-(defn *sqrt2 [x] (* (.sqrt js/Math 2) x))
-(defn sqrt [x] (.sqrt js/Math x))
+(defn msin
+  [frame period]
+  (let [t (* frame (/ (* 2 q/PI) period))]
+    (/ (+ 1 (q/sin t)) 2)))
 
 (defn spike
   "f(0) = 0, f(0.5) = 1, f(1) = 0, linear interpolation in between."
@@ -43,25 +38,11 @@
   (let [seconds-in-a-beat (/ bpm 60)]
     (* seconds-in-a-beat fps)))
 
-(defn norm
-  [x y]
-  (sqrt (+ (square x) (square y))))
-
 (defn slide
   [offset t]
   (if (< t offset)
     (+ t offset)
     (- t offset)))
-
-(defn hypotenuse
-  [x y]
-  (sqrt (+ (square x) (square y))))
-
-(defn range-lerp
-  "v is in [a,b] but I want it to be in [x,y]."
-  [a b x y v]
-  (let [t (/ (- v a) (- b a))]
-    (+ x (* t (- y x)))))
 
 (defn barycentre
   [x1 y1 x2 y2 x3 y3]
