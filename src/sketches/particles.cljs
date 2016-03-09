@@ -10,7 +10,7 @@
 
 (defn- move-particle [p]
   (let [pos (:position p)
-        displacement [(m/random-in -0.5 0.5) (m/random-in -0.5 0.5)]
+        displacement [(q/random -0.5 0.5) (q/random -0.5 0.5)]
         new-position (m/add-vec pos displacement)]
     (assoc p :position new-position)))
 

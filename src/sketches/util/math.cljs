@@ -1,21 +1,13 @@
 (ns sketches.util.math
   (:require [quil.core :as q]))
 
-(defn random
-  "A random number between 0 (included) and 1 (excluded)."
-  []
-  (. js/Math random))
-
-(defn random-in
-  [min max]
-  (+ min (* (- max min) (random))))
-
 (defn random-points
   [w h nb]
-  (->> (repeatedly random)
-      (take nb)
-      (partition 2)
-      (map (fn [[x y]] [(* w x) (* h y)]))))
+  (->> (partial q/random 1)
+       (repeatedly)
+       (take nb)
+       (partition 2)
+       (map (fn [[x y]] [(* w x) (* h y)]))))
 
 (defn msin
   [frame period]
