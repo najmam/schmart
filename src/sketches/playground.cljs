@@ -21,9 +21,9 @@
   (+ min (* (- max min) (random))))
 
 (defn random-points
-  []
+  [nb]
   (->> (repeatedly random)
-      (take 400)
+      (take nb)
       (partition 2)
       (map (fn [[x y]] [(* w x) (* h y)]))
       ))
@@ -116,18 +116,36 @@
 (defn setup []
   (q/frame-rate frame-rate)
   (q/color-mode :rgb)
-  (let [pts (random-points)]
-    {:points pts}))
+  (let [pts (random-points 100)
+        particles (map (fn [p] {:position p}) pts)]
+    {:particles particles}))
+
+(defn move-particle [p]
+  (let [pos (:position p)
+        displacement [(random-in -0.5 0.5) (random-in -0.5 0.5)]
+        new-position (add-vec pos displacement)]
+    (assoc p :position new-position)))
+
+(defn move-particles [particles]
+  (reduce
+    (fn [pcls p]
+      (conj pcls (move-particle p)))
+    []
+    particles))
 
 (defn update-state [state]
-  state)
+  (let [f (q/frame-count)]
+    (-> state
+        (update-in [:particles] move-particles))))
 
-(defn draw-state [{:keys [points triangulation]}]
-  (let [f (q/frame-count)
-        w 500
-        h 500]
+(defn draw-state [{:keys [particles]}]
+  (let [f (q/frame-count)]
   (q/background 0)
-  (circle (/ w 2) (/ h 2) 10)
+  (q/no-stroke)
+  (q/fill 255 0 0)
+  (doseq [p particles]
+    (let [[x y] (:position p)]
+      (circle x y 10)))
 ))
 
 (q/defsketch sketches
