@@ -3,6 +3,10 @@
 <link rel="alternate" type="application/rss+xml" href="rss.xml" title="{{blog_title}}">
 <link rel="stylesheet" href="reset.css">
 <link rel="stylesheet" href="schmart.css">
+<meta property="og:title" content="{{piece.title}}">
+<meta property="og:description" content="{{piece.description}}">
+<meta property="og:image" content="{{blog_url}}/{{piece.id}}.png">
+<meta property="og:site_name" content="{{blog_title}}">
 </head>
 <body class="sketch sk{{piece.id}}">
 	<div class="root">
