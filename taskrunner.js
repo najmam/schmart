@@ -15,7 +15,6 @@ cfg.author_email = "naji@pascience.net"
 cfg.author_fullname = "Naji Mammeri"
 cfg.rss_ttl_in_seconds = 60*60*24*5
 cfg.guid_prefix = "nj-schmart-"
-cfg.deploy_www_dir = "/home/naji/geek/code/pascience.net/www/"
 cfg.basedir = fs.realpathSync('.')
 cfg.build_dir = path.join(cfg.basedir, "build")
 cfg.build_dir_www = path.join(cfg.build_dir, "www")
