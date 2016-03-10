@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head><meta charset="utf-8">
-<title>{{piece.title}}</title>
+<title>{{piece.title}} | {{blog_title}}</title>
 <link rel="alternate" type="application/rss+xml" href="rss.xml" title="{{blog_title}}">
 <link rel="stylesheet" href="reset.css">
 <link rel="stylesheet" href="schmart.css">
