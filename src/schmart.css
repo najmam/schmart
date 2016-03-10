@@ -1,0 +1,39 @@
+body.sketch {
+	background: black;
+	width: 100%;
+	height: 100%;
+	overfill: hidden;
+}
+body.sketch > .root {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+body.sketch #sketch {
+	margin: 0 auto;
+	width: 500px;
+	height: 500px;
+	background: white;
+}
+body.playground #sketch {
+	border: 1px solid #7f7f7f;
+}
+
+body.index {
+	padding: 1em;
+	font-family: Helvetica;
+	font-size: 11pt;
+	background: #333;
+	color: white;
+	text-align: center;
+}
+body.index ul {
+	margin: 3em auto 1em auto;
+	width: 70%;
+}
+body.index p.subtitle { }
+body.index a { color: white; }
+body.index a:visited { color: #D18CD1; }
+body.index a:hover { color: white; text-decoration: none; }

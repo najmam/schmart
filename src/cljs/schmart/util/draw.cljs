@@ -1,4 +1,4 @@
-(ns sketches.util.draw
+(ns schmart.util.draw
   (:require [quil.core :as q :include-macros true]))
 
 (defn square-centered-at

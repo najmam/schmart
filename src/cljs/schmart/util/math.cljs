@@ -1,4 +1,4 @@
-(ns sketches.util.math
+(ns schmart.util.math
   (:require [quil.core :as q]))
 
 (defn random-points

@@ -1,4 +1,4 @@
-(ns sketches.util.color
+(ns schmart.util.color
   (:require [thi.ng.color.core :as col]))
 
 ;http://androidarts.com/palette/16pal.htm

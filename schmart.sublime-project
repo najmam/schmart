@@ -1,0 +1,10 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"folder_exclude_patterns": ["build", "target"],
+			"file_exclude_patterns": ["*-init.clj", "figwheel_server.log"]
+		}
+	]
+}

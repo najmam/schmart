@@ -1,8 +1,8 @@
-(ns sketches.particles
+(ns schmart.playground
   (:require [quil.core :as q :include-macros true]
             quil.middleware
-            [sketches.util.math :as m]
-            [sketches.util.draw :as d]))
+            [schmart.util.math :as m]
+            [schmart.util.draw :as d]))
 (enable-console-print!)
 (def frame-rate 30)
 (def w 500)

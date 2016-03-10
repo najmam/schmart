@@ -11,6 +11,6 @@ figwheel_server.log
 *.sublime-workspace
 js/
 out/
-www/js/
+build/
 *-init.clj
-
+node_modules
