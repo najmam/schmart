@@ -85,7 +85,7 @@ let copy_css = () => {
 	copyFileSync(path.join(cfg.src_dir, "schmart.css"), path.join(cfg.build_dir_www, "schmart.css"))
 }
 
-let deploy_piece = (piece_id) => {
+let deploy_pieces = (piece_id) => {
 	let piece = find_piece(piece_id)
 	if(piece == null) {
 		console.log(piece_error(piece_id))
@@ -134,19 +134,15 @@ let exec = (cmd, env) => {
 }
 
 let run = (args) => {
-	mkdirp_everything()
-
 	let firstarg, what
 	try {
 		firstarg = args[0]
-	} catch(e) {
-		print_usage_and_exit()
-	}
-	try {
 		what = args[1]
 	} catch(e) {
 		print_usage_and_exit()
 	}
+
+	mkdirp_everything()
 
 	if(firstarg == "playground") {
 		exec(cfg.clojure_cmd, { CLJS_BUILD: "playground", CLJS_BUILD_DIR: cfg.build_dir_js })
@@ -157,7 +153,10 @@ let run = (args) => {
 	} else if (firstarg == "deploy") {
 		if(what == null) {
 			print_usage_and_exit()
-		} else if(what == "everything") {
+		}
+
+		copy_css()
+		if(what == "everything") {
 			for(let p of find_all_pieces()) {
 				deploy_piece(p.id)
 			}
@@ -172,7 +171,6 @@ let run = (args) => {
 			}
 			deploy_piece(piece.id)	
 		}
-		copy_css()
 	} else if (firstarg == "clean") {
 		clean()
 	} else {
