@@ -17,7 +17,4 @@
                  ; development tools
                  [figwheel-sidecar "0.5.0-4"]
                  #_ [devcards "0.2.1-2"]]
-  :source-paths ["src/cljs"]
-  :plugins [[lein-cljsbuild "1.1.3"]]
-  :hooks [leiningen.cljsbuild]
-  :cljsbuild {:builds []})
+  :source-paths ["src/cljs"])

@@ -3,7 +3,8 @@
 
 (def build-dir (str (or (System/getenv "CLJS_BUILD_DIR") "build/www/js") "/"))
 (def build-type (or (System/getenv "CLJS_BUILD") "playground"))
-(def piece-id (or (System/getenv "CLJS_PIECE") "undefined"))
+(def piece-ids-str (or (System/getenv "CLJS_PIECES") ""))
+(def piece-ids (clojure.string/split piece-ids-str #","))
 
 ; open src/playground.html in the browser
 (def playground-build
@@ -15,15 +16,14 @@
 							:output-dir (str build-dir "playground")
 							:asset-path "../build/www/js/playground"
 							:optimizations :none
-       				:pretty-print true}
-  })
-(defn figwheel-options []
+       				:pretty-print true}})
+(def figwheel-options
   {:figwheel-options {:css-dirs ["src"]
                       :open-file-command ["figwheel-open-subl"]}
-   :build-ids [build-type]
+   :build-ids ["playground"]
    :all-builds [playground-build]})
 (when (= build-type "playground")
-  (ra/start-figwheel! (figwheel-options))
+  (ra/start-figwheel! figwheel-options)
   (ra/cljs-repl))
 
 (def production-compiler-options

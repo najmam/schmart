@@ -1,5 +1,5 @@
 "use strict"
-let usage = () => "Available commands:\n  clean\n  list-pieces\n  playground\n  deploy <piece>|index|everything"
+let usage = () => "Available commands:\n  clean\n  list-pieces\n  playground\n  deploy <piece1,piece2,...>|index|everything"
 
 let fs = require('fs')
 let path = require('path')
@@ -59,22 +59,11 @@ let find_all_pieces = () => {
 	}, [])
 }
 
-let find_piece = (piece_id) => {
-	for(let p of find_all_pieces()) {
-		if(p.id == piece_id) {
-			return p
-		}
-	}
-	return null
-}
-
 let njdate_to_jsdate = (date) => new Date(date)
 
 let njdate_to_rssdate = (date) => {
 	return njdate_to_jsdate(date).toUTCString()
 }
-
-let piece_error = (p) => `The piece '${p}' doesn't exist or isn't listed in src/index.txt.`
 
 let render_with_template = (template_string, obj) => {
 	return jinjs.defaultEnvironment.getTemplateFromString(template_string).render(obj)
@@ -85,19 +74,29 @@ let copy_css = () => {
 	copyFileSync(path.join(cfg.src_dir, "schmart.css"), path.join(cfg.build_dir_www, "schmart.css"))
 }
 
-let deploy_pieces = (piece_id) => {
-	let piece = find_piece(piece_id)
-	if(piece == null) {
-		console.log(piece_error(piece_id))
-		exit()
-	}
-	console.log(`Deploying piece ${piece_id}...`)
+let compile_html_for_piece = (p) => {
+	console.log(`Compiling HTML template for piece ${p.id}...`)
+	let tpl_data = Object.assign({}, cfg, { piece: p })
 	let piece_tpl = fs.readFileSync(path.join(cfg.src_dir, "piece.html.tpl")).toString()
-	let obj = cfg
-	obj.piece = piece
-	let html = render_with_template(piece_tpl, obj)
-	fs.writeFileSync(path.join(cfg.build_dir_www, `${piece.id}.html`), html)
-	exec(cfg.clojure_cmd, { CLJS_BUILD: "production", CLJS_BUILD_DIR: cfg.build_dir_js, CLJS_PIECE: ''+piece_id })
+	let html = render_with_template(piece_tpl, tpl_data)
+	fs.writeFileSync(path.join(cfg.build_dir_www, `${p.id}.html`), html)
+}
+
+let deploy_pieces = (piece_ids) => {
+	let pieces = find_all_pieces().filter(p => piece_ids.indexOf(p.id)>-1)
+	pieces.forEach((p, idx) => {
+		if(p == null) {
+			console.log(`The piece '${piece_ids[idx]}' doesn't exist or isn't listed in src/index.txt.`)
+			return
+		}
+		compile_html_for_piece(p)
+	})
+	
+	let to_compile = pieces.map(p => p.id).join(',')
+	if(to_compile.length > 0) {
+		console.log(`Compiling CLJS for pieces ${to_compile}...`)
+		exec(cfg.clojure_cmd, { CLJS_BUILD: "production", CLJS_BUILD_DIR: cfg.build_dir_js, CLJS_PIECES: to_compile })	
+	}
 }
 
 let deploy_index_and_rss = () => {
@@ -164,12 +163,8 @@ let run = (args) => {
 		} else if(what == "index") {
 			deploy_index_and_rss()
 		} else {
-			let piece = find_piece(what)
-			if(piece == null) {
-				console.log(piece_error(what))
-				exit()	
-			}
-			deploy_piece(piece.id)	
+			let piece_ids = what.split(',')
+			deploy_pieces(piece_ids)	
 		}
 	} else if (firstarg == "clean") {
 		clean()
