@@ -1,4 +1,7 @@
-/* Thank you Eric Meyer! http://meyerweb.com/eric/tools/css/reset/ */
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -55,8 +58,3 @@ html, body {
   margin: 0;
   padding: 0;
 }
-
-h1 { font-size: 3em; }
-h2 { font-size: 1.8em; }
-h3 { font-size: 1.2em; }
-code { font-family: monospace; }
