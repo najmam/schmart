@@ -20,7 +20,7 @@ cfg.build_dir = path.join(cfg.basedir, "build")
 cfg.build_dir_www = path.join(cfg.build_dir, "www")
 cfg.build_dir_js = path.join(cfg.build_dir_www, "js")
 cfg.src_dir = path.join(cfg.basedir, "src")
-cfg.clojure_cmd = "rlwrap lein run -m clojure.main build.clj"
+cfg.clojure_cmd = "lein run -m clojure.main build.clj"
 
 let exit = () => {
 	process.exit(1)
