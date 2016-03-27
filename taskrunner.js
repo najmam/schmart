@@ -6,6 +6,7 @@ let path = require('path')
 let child_process = require('child_process')
 let mkdirp = require('mkdirp').sync
 let jinjs = require('jinjs')
+let all_pieces = require('./src/sketches')
 
 let cfg = {}
 cfg.blog_title = "electronic schmart"
@@ -45,18 +46,7 @@ let mkdirp_everything = () => {
 }
 
 let find_all_pieces = () => {
-	return fs.readFileSync(path.join(cfg.src_dir, 'index.txt')).toString()
-	.split('\n')
-	.reduce((pieces, line) => {
-		line = line.trim()
-		if(line == "") {
-			return pieces
-		}
-		let [pubdate, id, title, tags] = line.split(' ## ')
-		return pieces.concat([{
-			id, pubdate, title, tags: tags.split(',').map(x => x.trim())
-		}])
-	}, [])
+	return all_pieces
 }
 
 let njdate_to_jsdate = (date) => new Date(date)
