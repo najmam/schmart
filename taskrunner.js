@@ -70,7 +70,6 @@ let render_with_template = (template_string, obj) => {
 }
 
 let copy_css = () => {
-	copyFileSync(path.join(cfg.src_dir, "reset.css"), path.join(cfg.build_dir_www, "reset.css"))
 	copyFileSync(path.join(cfg.src_dir, "schmart.css"), path.join(cfg.build_dir_www, "schmart.css"))
 }
 
@@ -156,9 +155,7 @@ let run = (args) => {
 
 		copy_css()
 		if(what == "everything") {
-			for(let p of find_all_pieces()) {
-				deploy_piece(p.id)
-			}
+			deploy_pieces(find_all_pieces().map(p => p.id))
 			deploy_index_and_rss()	
 		} else if(what == "index") {
 			deploy_index_and_rss()

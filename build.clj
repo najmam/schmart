@@ -26,12 +26,12 @@
   (ra/start-figwheel! figwheel-options)
   (ra/cljs-repl))
 
-(def production-compiler-options
-	{:main (str "schmart.sk" piece-id)
-	 :output-to (str build-dir "sk" piece-id ".js")
-	 :output-dir (str build-dir "sk" piece-id)
-	 :asset-path (str "js/sk" piece-id) ; unused ?
- 	 :optimizations :advanced
-   :cache-analysis true})
 (when (= build-type "production")
-  (cljs/build "src/cljs" production-compiler-options))
+	(doseq [piece-id piece-ids]
+	  (let [compiler-options {:main (str "schmart.sk" piece-id)
+	                          :output-to (str build-dir "sk" piece-id ".js")
+	                          :output-dir (str build-dir "sk" piece-id)
+	                          :asset-path (str "js/sk" piece-id) ; unused ?
+	                          :optimizations :advanced
+	                          :cache-analysis true}]
+	    (cljs/build "src/cljs" compiler-options))))
