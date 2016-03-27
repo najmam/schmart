@@ -34,14 +34,14 @@
   :update sketch-update
   :draw sketch-draw
   :middleware [quil.middleware/fun-mode]
-	:mouse-entered identity
-	:mouse-exited identity
-	:mouse-pressed identity
-	:mouse-released identity
-	:mouse-clicked identity
-	:mouse-moved identity
-	:mouse-dragged identity
-	:mouse-wheel identity
-	:key-pressed identity
-	:key-released identity
-	:key-typed identity)
+  :mouse-entered identity
+  :mouse-exited identity
+  :mouse-pressed identity
+  :mouse-released identity
+  :mouse-clicked identity
+  :mouse-moved identity
+  :mouse-dragged identity
+  :mouse-wheel identity
+  :key-pressed identity
+  :key-released identity
+  :key-typed identity)

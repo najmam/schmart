@@ -12,10 +12,10 @@
 <link rel="stylesheet" href="schmart.css">
 </head>
 <body class="sketch sk{{piece.id}}">
-	<div class="root">
-		<canvas id="sketch"></canvas>
-	</div>
-	<script src="js/sk{{piece.id}}.js"></script>
-	<!-- {{ piece.pubdate }} -->
+  <div class="root">
+    <canvas id="sketch"></canvas>
+  </div>
+  <script src="js/sk{{piece.id}}.js"></script>
+  <!-- {{ piece.pubdate }} -->
 </body>
 </html>

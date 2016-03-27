@@ -1,7 +1,7 @@
 (defproject schmart "1.0.0"
   :description "electronic schmart, bits and pieces by Naji Mammeri"
   :url "http://pascience.net/a/"
-  :license {:name " CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
+  :license {:name "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication"
             :url "http://creativecommons.org/publicdomain/zero/1.0/"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.7.228"]

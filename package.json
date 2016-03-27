@@ -2,13 +2,8 @@
   "name": "schmart",
   "version": "1.0.0",
   "description": "electronic schmart",
-  "main": "cmd.js",
-  "directories": {
-    "doc": "doc"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "private": "true",
+  "main": "taskrunner.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pascience/schmart.git"
