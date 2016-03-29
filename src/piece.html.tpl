@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/reset.css">
 <link rel="stylesheet" href="schmart.css">
 </head>
-<body class="sketch sk{{piece.id}}">
+<body class="sketch sk{{piece.id}} {{piece.css_body_classes_str}}">
   <div class="root">
     <canvas id="sketch"></canvas>
   </div>

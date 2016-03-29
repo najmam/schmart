@@ -46,7 +46,7 @@ let mkdirp_everything = () => {
 }
 
 let find_all_pieces = () => {
-  return all_pieces
+  return all_pieces.map(p => Object.assign({}, p, { css_body_classes_str: "centered" }))
 }
 
 let njdate_to_jsdate = (date) => new Date(date)
