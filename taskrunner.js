@@ -93,7 +93,7 @@ let deploy_index_and_rss = () => {
 
   let index_tpl = fs.readFileSync(path.join(cfg.src_dir, "index.html.tpl")).toString()
   let index_cfg = cfg
-  index_cfg.pieces = pieces
+  index_cfg.pieces = pieces.sort((a, b) => a.pubdate > b.pubdate ? -1 : 1)
   let index_html = render_with_template(index_tpl, index_cfg)
 
   let rss_tpl = fs.readFileSync(path.join(cfg.src_dir, "rss.xml.tpl")).toString()
