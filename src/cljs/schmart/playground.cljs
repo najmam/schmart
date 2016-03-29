@@ -3,7 +3,8 @@
             quil.middleware
             [schmart.util.math :as m]
             [schmart.util.draw :as d]
-            [schmart.util.sketch-size :as sketch-size-helpers]))
+            [schmart.util.sketch-size :as sketch-size-helpers]
+            [schmart.util.dimension :refer [stretch-to-fit]]))
 (enable-console-print!)
 (def frame-rate 30)
 (def sketch-size (atom {:w 500 :h 500}))
@@ -20,12 +21,17 @@
   state)
 
 (defn- sketch-draw [{:keys [particles]}]
-  (let [f (q/frame-count)]
-    (q/background 0)
+  (let [f (q/frame-count)
+        fill-stretched-rect (fn [ar]
+                              (let [{:keys [x y w h]} (stretch-to-fit (sketch-width) (sketch-height) ar)]
+                                (q/rect x y w h)
+                                ))]
+    (q/background 255)
     (q/no-stroke)
-    (q/fill 255 0 0)
-    (q/rect 0 0 20 20)
-    (q/rect (- (sketch-width) 20) (- (sketch-height) 20) 20 20)))
+    #_ (do (q/fill 255 0 0) (fill-stretched-rect 1))
+    #_ (do (q/fill 0 255 0) (fill-stretched-rect 2))
+    (do (q/fill 0 0 255) (fill-stretched-rect 0.8))
+    ))
 
 (q/defsketch mysketch
   :host "sketch"
