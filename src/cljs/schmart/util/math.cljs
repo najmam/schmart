@@ -49,3 +49,13 @@
   [& vecs]
   [(->> vecs (map first) (reduce +))
    (->> vecs (map second) (reduce +))])
+
+(defn clamp [v min max]
+  (cond
+    (< v min) min
+    (> v max) max
+    :else v))
+
+(defn p-lerp
+  [[x1 y1] [x2 y2] t]
+  [(q/lerp x1 x2 t) (q/lerp y1 y2 t)])
