@@ -20,17 +20,27 @@
 (defn- sketch-update [state]
   state)
 
+(defn rect-fn
+  [ar]
+  (fn [x y w h]
+    (let [{sx :x sy :y sw :w sh :h} (stretch-to-fit (sketch-width) (sketch-height) ar)]
+      (q/rect (+ sx x) (+ sy y) w h))))
+
 (defn- sketch-draw [{:keys [particles]}]
   (let [f (q/frame-count)
-        fill-stretched-rect (fn [ar]
-                              (let [{:keys [x y w h]} (stretch-to-fit (sketch-width) (sketch-height) ar)]
-                                (q/rect x y w h)
-                                ))]
-    (q/background 255)
+        my-ar 2
+        {fw :w fh :h} (stretch-to-fit (sketch-width) (sketch-height) my-ar)
+        R (rect-fn my-ar)]
+    (q/fill 255)
+    (q/rect 0 0 (sketch-width) (sketch-height))
     (q/no-stroke)
-    #_ (do (q/fill 255 0 0) (fill-stretched-rect 1))
-    #_ (do (q/fill 0 255 0) (fill-stretched-rect 2))
-    (do (q/fill 0 0 255) (fill-stretched-rect 0.8))
+    
+    (q/fill 255 0 0)
+    (R 0 0 fw fh)
+    (q/fill 0 255 0)
+    (R 0 0 20 20)
+    (q/fill 0 0 255)
+    (R (- fw 40) (- fh 40) 40 40)
     ))
 
 (q/defsketch mysketch
