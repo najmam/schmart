@@ -53,7 +53,6 @@
 
 (defn- sketch-update [st]
   (let [f (q/frame-count)
-        nb-colors 16
         cycle-period 0.2
         c1 (q/floor (/ (/ f cycle-period) frame-rate))]
     (if (= (:c1 st) c1) st
