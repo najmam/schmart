@@ -8,8 +8,8 @@
                  
                  [quil "2.3.0"]
                  [thi.ng/geom "0.0.908"]
-                 [thi.ng/color "1.0.1"]
-                 [thi.ng/math "0.1.4"]
+                 [thi.ng/color "1.1.2"]
+                 [thi.ng/math "0.2.1"]
                  #_ [thi.ng/morphogen "0.1.1"]
                  #_ [thi.ng/shadergraph "0.1.1"]
                  #_ [thi.ng/dstruct "0.1.2"]
